@@ -1,0 +1,23 @@
+{
+    "_extensions": ["local_extensions.YAMLDumper"],
+    "_jinja2_env_vars": {
+        "block_start_string": "{!",
+        "block_end_string": "!}",
+        "variable_start_string": "{=",
+        "variable_end_string": "=}",
+        "comment_start_string": "{@",
+        "comment_end_string": "@}"
+    },
+    "name": "Template Formula",
+    "abbr": "{{ cookiecutter.name | lower }}",
+    "abbr_pysafe": "{{ cookiecutter.abbr | slugify(separator='_') }}",
+    "pkg": "",
+    "needs_repo": "",
+    "config": "",
+    "service": "",
+    "subcomponent": "",
+    "subcomponent_config": "",
+    "git_username": "none",
+    "_lookup": {},
+    "_settings": {}
+}

@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  lookup:
+    rootgroup: root
+{!- if cookiecutter.pkg !}
+    pkg:
+      name: {= cookiecutter.pkg =}
+{!- endif !}
+{!- if 'y' == cookiecutter.needs_repo !}
+    enablerepo:
+      stable: true
+{!- endif !}
+{!- if cookiecutter.config !}
+    config: '{= cookiecutter.config =}'
+{!- endif !}
+{!- if cookiecutter.service !}
+    service:
+      name: {= cookiecutter.service =}
+{!- endif !}
+{!- if cookiecutter.subcomponent and cookiecutter.subcomponent_config !}
+    {= cookiecutter.subcomponent =}:
+      config: {= cookiecutter.subcomponent_config =}
+{!- endif !}
+{!- if cookiecutter._lookup !}
+    {= cookiecutter._lookup | yaml(False) | indent(4) =}
+{!- endif !}
+{!- if cookiecutter._settings !}
+  {= cookiecutter._settings | yaml(False) | indent(2) =}
+{!- endif !}
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...

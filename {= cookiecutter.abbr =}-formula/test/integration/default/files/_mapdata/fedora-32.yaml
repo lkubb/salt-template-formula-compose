@@ -1,0 +1,56 @@
+# yamllint disable rule:indentation rule:line-length
+# Fedora-32
+---
+values:
+  added_in_defaults: defaults_value
+  added_in_lookup: lookup_value
+  added_in_pillar: pillar_value
+  lookup:
+    arch: amd64
+    rootgroup: root
+{!- if cookiecutter.needs_repo !}
+    enablerepo:
+      stable: true
+{!- endif !}
+{!- if cookiecutter.config !}
+    config: '{= cookiecutter.config =}'
+{!- endif !}
+{!- if cookiecutter.service !}
+    service:
+      name: {= cookiecutter.service =}
+{!- endif !}
+{!- if cookiecutter.subcomponent and cookiecutter.subcomponent_config !}
+    {= cookiecutter.subcomponent =}:
+      config: {= cookiecutter.subcomponent_config =}
+{!- endif !}
+{!- if cookiecutter._lookup !}
+    {= cookiecutter._lookup | yaml(False) | indent(4) =}
+{!- endif !}
+{!- if cookiecutter._settings !}
+  {= cookiecutter._settings | yaml(False) | indent(2) =}
+{!- endif !}
+  map_jinja:
+    sources:
+    - Y:G@osarch
+    - Y:G@os_family
+    - Y:G@os
+    - Y:G@osfinger
+    - C@{= cookiecutter.abbr_pysafe =}
+    - Y:G@id
+  master: template-master
+  tofs:
+    files_switch:
+    - any/path/can/be/used/here
+    - id
+    - roles
+    - osfinger
+    - os
+    - os_family
+    source_files:
+      {= cookiecutter.abbr_pysafe =}-config-file-file-managed:
+      - example.tmpl.jinja
+{!- if cookiecutter.subcomponent !}
+      {= cookiecutter.abbr_pysafe =}-{= cookiecutter.subcomponent =}-config-file-file-managed:
+      - {= cookiecutter.subcomponent =}-example.tmpl.jinja
+{!- endif !}
+  winner: pillar
