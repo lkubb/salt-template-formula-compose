@@ -1,5 +1,5 @@
-Cookiecutter Template Formula
-=============================
+Cookiecutter Template Formula (Salt)
+====================================
 
 This ``cookiecutter`` template is an opinionated variant of the `official template-formula <https://github.com/saltstack-formulas/template-formula>`_. Note that this is pre-alpha atm and not everything might make sense.
 
