@@ -59,52 +59,69 @@ Available states
 *Meta-state (This is a state that includes other states)*.
 
 This installs the {= cookiecutter.abbr_pysafe =} package,
-manages the {= cookiecutter.abbr_pysafe =} configuration file and then
-starts the associated {= cookiecutter.abbr_pysafe =} service.
+{!- if cookiecutter.config !}
+manages the {= cookiecutter.abbr_pysafe =} configuration file{! endif !}{! if cookiecutter.service !} and then
+starts the associated {= cookiecutter.abbr_pysafe =} service.{! endif !}
 
 ``{= cookiecutter.abbr_pysafe =}.package``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^^
 
 This state will install the {= cookiecutter.abbr_pysafe =} package only.
 
+{!- if cookiecutter.config !}
+
 ``{= cookiecutter.abbr_pysafe =}.config``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^
 
-This state will configure the {= cookiecutter.abbr_pysafe =} service and has a dependency on ``{= cookiecutter.abbr_pysafe =}.install``
+This state will configure the {= cookiecutter.abbr_pysafe =} {= 'service' if cookiecutter.service else 'package' =} and has a dependency on ``{= cookiecutter.abbr_pysafe =}.install``
 via include list.
+{!- endif !}
+
+{!- if cookiecutter.service !}
 
 ``{= cookiecutter.abbr_pysafe =}.service``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^^
 
-This state will start the {= cookiecutter.abbr_pysafe =} service and has a dependency on ``{= cookiecutter.abbr_pysafe =}.config``
-via include list.
+This state will start the {= cookiecutter.abbr_pysafe =} service{! if cookiecutter.config !} and has a dependency on ``{= cookiecutter.abbr_pysafe =}.config``
+via include list{! endif !}.
+{!- endif !}
 
 ``{= cookiecutter.abbr_pysafe =}.clean``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
-this state will undo everything performed in the ``{= cookiecutter.abbr_pysafe =}`` meta-state in reverse order, i.e.
+This state will undo everything performed in the ``{= cookiecutter.abbr_pysafe =}`` meta-state in reverse order, i.e.
+{!- if cookiecutter.service !}
 stops the service,
+{!- endif !}
+{!- if cookiecutter.config !}
 removes the configuration file and
+{!- endif !}
 then uninstalls the package.
+
+{!- if cookiecutter.service !}
 
 ``{= cookiecutter.abbr_pysafe =}.service.clean``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^^^^^^^^
 
 This state will stop the {= cookiecutter.abbr_pysafe =} service and disable it at boot time.
+{!- endif !}
+
+{!- if cookiecutter.config !}
 
 ``{= cookiecutter.abbr_pysafe =}.config.clean``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the {= cookiecutter.abbr_pysafe =} service and has a
-dependency on ``{= cookiecutter.abbr_pysafe =}.service.clean`` via include list.
+This state will remove the configuration of the {= cookiecutter.abbr_pysafe =}{!if cookiecutter.service !} service and has a
+dependency on ``{= cookiecutter.abbr_pysafe =}.service.clean`` via include list{! else !}package{! endif !}.
+{!- endif !}
 
 ``{= cookiecutter.abbr_pysafe =}.package.clean``
 {= '^' * cookiecutter.abbr_pysafe | length =}^^^^^^^^^^^^^^^^^^
 
-This state will remove the {= cookiecutter.abbr_pysafe =} package and has a depency on
-``{= cookiecutter.abbr_pysafe =}.config.clean`` via include list.
+This state will remove the {= cookiecutter.abbr_pysafe =} package{! if cookiecutter.config !} and has a depency on
+``{= cookiecutter.abbr_pysafe =}.config.clean`` via include list{! endif !}.
 
 {!- if cookiecutter.subcomponent !}
 
@@ -114,21 +131,21 @@ This state will remove the {= cookiecutter.abbr_pysafe =} package and has a depe
 *Meta-state (This is a state that includes other states)*.
 
 This state installs a {= cookiecutter.subcomponent =} configuration file before
-configuring and starting the {= cookiecutter.abbr_pysafe =} service.
+configuring{! if cookiecutter.service !} and starting{! endif !} the {= cookiecutter.abbr_pysafe =} {= 'service' if cookiecutter.service else 'package' =}.
 
 ``{= cookiecutter.abbr_pysafe =}.{= cookiecutter.subcomponent =}.config``
 {= '^' * ((cookiecutter.abbr_pysafe ~ cookiecutter.subcomponent) | length) =}^^^^^^^^^^^^
 
-This state will configure the {= cookiecutter.abbr_pysafe =} subcomponent and has a
-dependency on ``{= cookiecutter.abbr_pysafe =}.config`` via include list.
+This state will configure the {= cookiecutter.abbr_pysafe =} subcomponent{! if cookiecutter.config !} and has a
+dependency on ``{= cookiecutter.abbr_pysafe =}.config`` via include list{! endif !}.
 
 ``{= cookiecutter.abbr_pysafe =}.{= cookiecutter.subcomponent =}.config.clean``
 {= '^' * ((cookiecutter.abbr_pysafe ~ cookiecutter.subcomponent) | length) =}^^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the {= cookiecutter.abbr_pysafe =} subcomponent
+This state will remove the configuration of the {= cookiecutter.abbr_pysafe =} subcomponent{! if cookiecutter.service !}
 and reload the {= cookiecutter.abbr_pysafe =} service by a dependency on
 ``{= cookiecutter.abbr_pysafe =}.service.running`` via include list and ``watch_in``
-requisite.
+requisite{! endif !}.
 {!- endif !}
 
 Contributing to this repo
