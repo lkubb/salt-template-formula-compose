@@ -15,7 +15,7 @@ Ensure {= cookiecutter.name =} APT repository can be managed:
 {%-   endif %}
 {%- endif %}
 
-{%- for reponame, enabled in {= cookiecutter.abbr_pysafe =}.lookup.pkg.enablerepo %}
+{%- for reponame, enabled in {= cookiecutter.abbr_pysafe =}.lookup.enablerepo.items() %}
 {%-   if enabled %}
 
 {= cookiecutter.name =} {{ reponame }} repository is available:
@@ -23,7 +23,7 @@ Ensure {= cookiecutter.name =} APT repository can be managed:
 {%-     for conf, val in {= cookiecutter.abbr_pysafe =}.lookup.repos[reponame].items() %}
     - {{ conf }}: {{ val }}
 {%-     endfor %}
-{%-     if {= cookiecutter.abbr_pysafe =}.lookup.pkg.manager in ['dnf', 'yum', 'zypper'] %}
+{%-     if {= cookiecutter.abbr_pysafe =}.lookup.pkg_manager in ['dnf', 'yum', 'zypper'] %}
     - enabled: 1
 {%-     endif %}
     - require_in:

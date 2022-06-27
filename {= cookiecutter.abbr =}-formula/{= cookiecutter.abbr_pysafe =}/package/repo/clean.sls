@@ -13,14 +13,16 @@ include:
 {%-   endif %}
 
 {%- else %}
-{%-   for reponame, repodata in {= cookiecutter.abbr_pysafe =}.lookup.repos.items() %}
+{%-   for reponame, enabled in {= cookiecutter.abbr_pysafe =}.lookup.enablerepo.items() %}
+{%-     if enabled %}
 
 {= cookiecutter.name =} {{ reponame }} repository is absent:
   pkgrepo.absent:
-{%-     for conf in ['name', 'ppa', 'ppa_auth', 'keyid', 'keyid_ppa', 'copr'] %}
-{%-       if conf in repodata %}
-    - {{ conf }}: {{ repodata[conf] }}
-{%-       endif %}
-{%-     endfor %}
+{%-       for conf in ['name', 'ppa', 'ppa_auth', 'keyid', 'keyid_ppa', 'copr'] %}
+{%-         if conf in {= cookiecutter.abbr_pysafe =}.lookup.repos[reponame] %}
+    - {{ conf }}: {{ {= cookiecutter.abbr_pysafe =}.lookup.repos[reponame][conf] }}
+{%-         endif %}
+{%-       endfor %}
+{%-     endif %}
 {%-   endfor %}
 {%- endif %}

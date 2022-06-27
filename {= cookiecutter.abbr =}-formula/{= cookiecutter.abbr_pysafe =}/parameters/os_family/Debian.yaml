@@ -20,6 +20,6 @@ values:
         humanname: {= cookiecutter.name =} stable
         name: deb http://FIXME stable main
         key_url: http://FIXME
-        file: /etc/apt/sources.list.d/{= cookiecutter.abbr =}.conf
+        file: /etc/apt/sources.list.d/{= cookiecutter.abbr =}.list
 {!- endif !}
 ...
