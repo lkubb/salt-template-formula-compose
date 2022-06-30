@@ -1,7 +1,8 @@
-Cookiecutter Template Formula (Salt)
-====================================
+Cookiecutter Compose Template Formula (Salt)
+============================================
 
-This ``cookiecutter`` template is an opinionated variant of the `official template-formula <https://github.com/saltstack-formulas/template-formula>`_. Note that this is pre-alpha atm and not everything might make sense.
+This ``cookiecutter`` template is an opinionated variant of the `official template-formula <https://github.com/saltstack-formulas/template-formula>`_ specifically for creating formulae that manage
+container compositions with podman, podman-compose, systemd using my custom `compose modules <https://github.com/lkubb/salt-podman-formula>`_.
 
 Prerequisites
 -------------
@@ -36,7 +37,7 @@ Creating a new formula from this template is as easy as:
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/lkubb/tool-template-formula
+    cookiecutter https://github.com/lkubb/salt-template-formula-compose
 
 For cookiecutter, this is where the journey ends.
 
@@ -44,7 +45,7 @@ The recommended way to use this template goes a little further though, since (a)
 
 .. code-block:: bash
 
-    cruft create https://github.com/lkubb/tool-template-formula
+    cruft create https://github.com/lkubb/salt-template-formula-compose
 
 Customization
 ~~~~~~~~~~~~~
@@ -67,26 +68,6 @@ abbr [str]
 
 abbr_pysafe [str]
     A short and pythonic version of ``abbr``. Example: ``gitea``. This will be used in many places, including the formula base dir, the pillar key and the Jinja variable name.
-
-pkg [str]
-    The name of the package to install. Leave empty to skip.
-    If skipped, will still leave the state files since most
-    formulae will install some program, even if it is not packaged.
-
-needs_repo [bool]
-    Whether the package installation relies on custom repositories (for Linux). This will add boilerplate for those in the ``parameters/os_family`` files as well as sls files to install them.
-
-config [str]
-    Path to the default config file. Leave empty to skip.
-
-service [str]
-    The name of the service [on Linux]. Leave empty to skip.
-
-subcomponent [str]
-    The name of a subcomponent, if applicable. Leave empty to skip.
-
-subcomponent_config [str]
-    Path to the default config file of a subcomponent. Leave empty to skip.
 
 git_username [str]
     Your Github/Gitlab/... username that should be used as the author of the formula.

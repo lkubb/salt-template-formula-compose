@@ -8,15 +8,11 @@
         "comment_start_string": "{@",
         "comment_end_string": "@}"
     },
-    "name": "Template Formula",
+    "name": "Composition Template Formula",
     "abbr": "{{ cookiecutter.name | lower }}",
     "abbr_pysafe": "{{ cookiecutter.abbr | slugify(separator='_') }}",
-    "pkg": "",
-    "needs_repo": "",
-    "config": "",
-    "service": "",
-    "subcomponent": "",
-    "subcomponent_config": "",
+    "project_name": "{{ cookiecutter.name | lower | slugify(separator='_') }}",
+    "containers": "{{ cookiecutter.project_name }}",
     "git_username": "none",
     "_lookup": {},
     "_settings": {}

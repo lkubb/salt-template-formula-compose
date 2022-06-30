@@ -9,19 +9,25 @@
 include:
   - {{ sls_package_install }}
 
-{= cookiecutter.abbr_pysafe =}-config-file-file-managed:
+{= cookiecutter.name =} environment files are managed:
   file.managed:
-    - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.config }}
-    - source: {{ files_switch(['example.tmpl'],
-                              lookup='{= cookiecutter.abbr_pysafe =}-config-file-file-managed'
-                 )
-              }}
-    - mode: 644
+    - names:
+{!- for cnt in cookiecutter.containers.split(",") !}
+      - {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.config_{= cnt =} }}:
+        - source: {{ files_switch(['{= cnt =}.env', '{= cnt =}.env.j2'],
+                                  lookup='{= cnt =} environment file is managed',
+                                  indent_width=10,
+                     )
+                  }}
+{!- endfor !}
+    - mode: '0640'
     - user: root
-    - group: {{ {= cookiecutter.abbr_pysafe =}.lookup.rootgroup }}
+    - group: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - makedirs: True
     - template: jinja
     - require:
-      - sls: {{ sls_package_install }}
+      - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - watch_in:
+      - {= cookiecutter.name =} is installed
     - context:
         {= cookiecutter.abbr_pysafe =}: {{ {= cookiecutter.abbr_pysafe =} | json }}

@@ -3,15 +3,58 @@
 # yamllint disable rule:comments-indentation
 ---
 {= cookiecutter.abbr_pysafe =}:
+  install:
+      # Install rootless containers running as dedicated user.
+    rootless: true
+      # When applying `clean` states, also remove application data.
+      # Setting this to true might incur accidental data loss!
+    remove_all_data_for_sure: false
+{!- if "install" in cookiecutter._settings !}
+    {= cookiecutter._settings.install | yaml(False) | indent(4) =}
+{!- endif !}
 {!- if cookiecutter._settings !}
-
-  {= cookiecutter._settings | yaml(False) | indent(2) =}
+{!-   for var, val in cookiecutter._settings.items() !}
+{!-     if "install" != var !}
+  {= {var: val} | yaml(False) | indent(2) =}
+{!-     endif !}
+{!-   endfor !}
 {!- endif !}
 
-{!- if cookiecutter._lookup !}
-
   lookup:
-    {= cookiecutter._lookup | yaml(False) | indent(4) =}
+    rootgroup: root
+    compose:
+      create_pod: null
+      pod_args: null
+      project_name: {= cookiecutter.project_name =}
+      remove_orphans: true
+      service:
+        container_prefix: null
+        ephemeral: true
+        pod_prefix: null
+        restart_policy: on-failure
+        separator: null
+        stop_timeout: null
+    paths:
+      base: /opt/containers/{= cookiecutter.project_name =}
+      compose: docker-compose.yml
+{!- for cnt in cookiecutter.containers.split(",") !}
+      config_{= cnt =}: {= cnt =}.env
+{!- endfor !}
+{!- if "paths" in cookiecutter._lookup !}
+      {= cookiecutter._lookup.paths | yaml(False) | indent(6) =}
+{!- endif !}
+    user:
+      groups: []
+      home: null
+      name: {= cookiecutter.project_name =}
+      shell: /usr/sbin/nologin
+      uid: null
+{!- if cookiecutter._lookup !}
+{!-   for var, val in cookiecutter._lookup.items() !}
+{!-     if "paths" != var !}
+    {= {var: val} | yaml(False) | indent(4) =}
+{!-     endif !}
+{!-   endfor !}
 {!- endif !}
 
   tofs:
@@ -39,6 +82,11 @@
       # The entries under `source_files` are prepended to the default source files
       # given for the state
     source_files:
-      {= cookiecutter.abbr_pysafe =}-config-file-file-managed:
-        - 'example_alt.tmpl'
-        - 'example_alt.tmpl.jinja'
+      {= cookiecutter.name =} compose file is managed:
+        - docker-compose_alt.yml
+        - docker-compose_alt.yml.j2
+{!- for cnt in cookiecutter.containers.split(",") !}
+      {= cnt =} environment file is managed:
+        - {= cnt =}_alt.env
+        - {= cnt =}_alt.env.j2
+{!- endfor !}

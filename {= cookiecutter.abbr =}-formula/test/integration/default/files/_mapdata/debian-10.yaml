@@ -2,32 +2,59 @@
 # Debian-10
 ---
 values:
+values:
   added_in_defaults: defaults_value
   added_in_lookup: lookup_value
   added_in_pillar: pillar_value
   lookup:
     arch: amd64
     rootgroup: root
-{!- if cookiecutter.needs_repo !}
-    enablerepo:
-      stable: true
+    compose:
+      create_pod: null
+      pod_args: null
+      project_name: {= cookiecutter.project_name =}
+      remove_orphans: true
+      service:
+        container_prefix: null
+        ephemeral: true
+        pod_prefix: null
+        restart_policy: on-failure
+        separator: null
+        stop_timeout: null
+    paths:
+      base: /opt/containers/{= cookiecutter.project_name =}
+      compose: docker-compose.yml
+{!- for cnt in cookiecutter.containers.split(",") !}
+      config_{= cnt =}: {= cnt =}.env
+{!- endfor !}
+{!- if "paths" in cookiecutter._lookup !}
+      {= cookiecutter._lookup.paths | yaml(False) | indent(6) =}
 {!- endif !}
-{!- if cookiecutter.config !}
-    config: '{= cookiecutter.config =}'
-{!- endif !}
-{!- if cookiecutter.service !}
-    service:
-      name: {= cookiecutter.service =}
-{!- endif !}
-{!- if cookiecutter.subcomponent and cookiecutter.subcomponent_config !}
-    {= cookiecutter.subcomponent =}:
-      config: {= cookiecutter.subcomponent_config =}
-{!- endif !}
+    user:
+      groups: []
+      home: null
+      name: {= cookiecutter.project_name =}
+      shell: /usr/sbin/nologin
+      uid: null
 {!- if cookiecutter._lookup !}
-    {= cookiecutter._lookup | yaml(False) | indent(4) =}
+{!-   for var, val in cookiecutter._lookup.items() !}
+{!-     if "paths" != var !}
+    {= {var: val} | yaml(False) | indent(4) =}
+{!-     endif !}
+{!-   endfor !}
+{!- endif !}
+  install:
+    rootless: true
+    remove_all_data_for_sure: false
+{!- if "install" in cookiecutter._settings !}
+    {= cookiecutter._settings.install | yaml(False) | indent(4) =}
 {!- endif !}
 {!- if cookiecutter._settings !}
-  {= cookiecutter._settings | yaml(False) | indent(2) =}
+{!-   for var, val in cookiecutter._settings.items() !}
+{!-     if "install" != var !}
+  {= {var: val} | yaml(False) | indent(2) =}
+{!-     endif !}
+{!-   endfor !}
 {!- endif !}
   map_jinja:
     sources:
@@ -47,10 +74,6 @@ values:
     - os
     - os_family
     source_files:
-      {= cookiecutter.abbr_pysafe =}-config-file-file-managed:
-      - example.tmpl.jinja
-{!- if cookiecutter.subcomponent !}
-      {= cookiecutter.abbr_pysafe =}-{= cookiecutter.subcomponent =}-config-file-file-managed:
-      - {= cookiecutter.subcomponent =}-example.tmpl.jinja
-{!- endif !}
+      {= cookiecutter.name =} environment file is managed:
+      - {= cookiecutter.abbr_pysafe =}.env.j2
   winner: pillar

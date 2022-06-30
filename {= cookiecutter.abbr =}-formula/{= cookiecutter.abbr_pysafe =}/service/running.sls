@@ -2,22 +2,36 @@
 # vim: ft=sls
 
 {%- set tplroot = tpldir.split('/')[0] %}
-{!- if cookiecutter.config !}
 {%- set sls_config_file = tplroot ~ '.config.file' %}
-{!- endif !}
 {%- from tplroot ~ "/map.jinja" import mapdata as {= cookiecutter.abbr_pysafe =} with context %}
-
-{!- if cookiecutter.config !}
 
 include:
   - {{ sls_config_file }}
-{!- endif !}
 
-{= cookiecutter.abbr_pysafe =}-service-running-service-running:
-  service.running:
-    - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.service.name }}
-    - enable: True
-{!- if cookiecutter.config !}
+{= cookiecutter.name =} service is enabled:
+  compose.enabled:
+    - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.compose }}
+{%- for param in ["project_name", "container_prefix", "pod_prefix", "separator"] %}
+{%-   if {= cookiecutter.abbr_pysafe =}.lookup.compose.get(param) is not none %}
+    - {{ param }}: {{ {= cookiecutter.abbr_pysafe =}.lookup.compose[param] }}
+{%-   endif %}
+{%- endfor %}
+    - require:
+      - {= cookiecutter.name =} is installed
+{%- if {= cookiecutter.abbr_pysafe =}.install.rootless %}
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+{%- endif %}
+
+{= cookiecutter.name =} service is running:
+  compose.running:
+    - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.compose }}
+{%- for param in ["project_name", "container_prefix", "pod_prefix", "separator"] %}
+{%-   if {= cookiecutter.abbr_pysafe =}.lookup.compose.get(param) is not none %}
+    - {{ param }}: {{ {= cookiecutter.abbr_pysafe =}.lookup.compose[param] }}
+{%-   endif %}
+{%- endfor %}
+{%- if {= cookiecutter.abbr_pysafe =}.install.rootless %}
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+{%- endif %}
     - watch:
-      - sls: {{ sls_config_file }}
-{!- endif !}
+      - {= cookiecutter.name =} is installed

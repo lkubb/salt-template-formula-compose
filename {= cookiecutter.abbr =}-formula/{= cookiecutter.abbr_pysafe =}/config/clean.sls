@@ -5,16 +5,16 @@
 {%- set sls_service_clean = tplroot ~ '.service.clean' %}
 {%- from tplroot ~ "/map.jinja" import mapdata as {= cookiecutter.abbr_pysafe =} with context %}
 
-{!- if cookiecutter.service !}
-
 include:
   - {{ sls_service_clean }}
-{!- endif !}
 
-{= cookiecutter.abbr_pysafe =}-config-clean-file-absent:
+# This does not lead to the containers/services being rebuilt
+# and thus differs from the usual behavior
+{= cookiecutter.name =} environment files are absent:
   file.absent:
-    - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.config }}
-{!- if cookiecutter.service !}
+    - names:
+{!- for cnt in cookiecutter.containers.split(",") !}
+      - {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.config_{= cnt =} }}
+{!- endfor !}
     - require:
       - sls: {{ sls_service_clean }}
-{!- endif !}
