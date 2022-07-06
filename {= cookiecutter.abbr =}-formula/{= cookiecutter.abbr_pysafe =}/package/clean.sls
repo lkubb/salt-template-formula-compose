@@ -44,7 +44,7 @@ include:
 {%- if {= cookiecutter.abbr_pysafe =}.install.remove_all_data_for_sure %}
 
 {= cookiecutter.name =} paths are absent:
-  file.directory:
+  file.absent:
     - names:
       - {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.base }}
     - require:
