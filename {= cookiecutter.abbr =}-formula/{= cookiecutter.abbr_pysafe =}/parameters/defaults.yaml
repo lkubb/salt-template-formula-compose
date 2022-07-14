@@ -6,11 +6,12 @@
 values:
   lookup:
     rootgroup: root
+{!- set composeconf = cookiecutter._lookup.get("compose", {}) !}
     compose:
-      create_pod: null
-      pod_args: null
+      create_pod: {{ composeconf.get("create_pod", "null") }}
+      pod_args: {{ composeconf.get("pod_args", "null") }}
       project_name: {= cookiecutter.project_name =}
-      remove_orphans: true
+      remove_orphans: {{ composeconf.get("remove_orphans", "true") }}
       service:
         container_prefix: null
         ephemeral: true
