@@ -22,6 +22,8 @@
   compose.lingering_managed:
     - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - enable: {{ {= cookiecutter.abbr_pysafe =}.install.rootless }}
+    - require:
+      - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
 
 {= cookiecutter.name =} paths are present:
   file.directory:
