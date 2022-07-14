@@ -34,6 +34,12 @@ values:
       name: {= userconf.get("name", cookiecutter.project_name) =}
       shell: {= userconf.get("shell", "/usr/sbin/nologin") =}
       uid: {= userconf.get("uid", "null") =}
+      gid: {= userconf.get("gid", "null") =}
+{!- for conf in userconf !}
+{!-   if conf not in ["groups", "home", "name", "shell", "uid", "gid"] !}
+      {{ conf }}: {= userconf[conf] =}
+{!-   endif !}
+{!- endfor !}
 {!- if cookiecutter._lookup !}
 {!-   for var, val in cookiecutter._lookup.items() !}
 {!-     if var not in ["paths", "user"] !}
