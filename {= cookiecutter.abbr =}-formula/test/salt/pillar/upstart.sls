@@ -29,14 +29,15 @@
       {= cookiecutter._lookup.paths | yaml(False) | indent(6) =}
 {!- endif !}
     user:
-      groups: []
-      home: null
-      name: {= cookiecutter.project_name =}
-      shell: /usr/sbin/nologin
-      uid: null
+{!- set userconf = cookiecutter._lookup.get("user", {}) !}
+      groups: {= userconf.get("groups", []) =}
+      home: {= userconf.get("home", "null") =}
+      name: {= userconf.get("name", cookiecutter.project_name) =}
+      shell: {= userconf.get("shell", "/usr/sbin/nologin") =}
+      uid: {= userconf.get("uid", "null") =}
 {!- if cookiecutter._lookup !}
 {!-   for var, val in cookiecutter._lookup.items() !}
-{!-     if "paths" != var !}
+{!-     if var not in ["paths", "user"] !}
     {= {var: val} | yaml(False) | indent(4) =}
 {!-     endif !}
 {!-   endfor !}
