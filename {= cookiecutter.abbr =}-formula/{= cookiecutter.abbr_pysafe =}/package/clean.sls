@@ -33,6 +33,9 @@ include:
   compose.lingering_managed:
     - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - enable: false
+    - onlyif:
+      - fun: user.info
+        name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
 
 {= cookiecutter.name =} user account is absent:
   user.absent:
