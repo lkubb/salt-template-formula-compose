@@ -22,18 +22,21 @@
 
   lookup:
     rootgroup: root
+{!- set composeconf = cookiecutter._lookup.get("compose", {}) !}
     compose:
-      create_pod: null
-      pod_args: null
+      create_pod: {= composeconf.get("create_pod", "null") =}
+      pod_args: {= composeconf.get("pod_args", "null") =}
       project_name: {= cookiecutter.project_name =}
-      remove_orphans: true
+      remove_orphans: {= composeconf.get("remove_orphans", "true") =}
+{!- set serviceconf = composeconf.get("service", {}) !}
       service:
-        container_prefix: null
-        ephemeral: true
-        pod_prefix: null
-        restart_policy: on-failure
-        separator: null
-        stop_timeout: null
+        container_prefix: {= serviceconf.get("container_prefix", "null") =}
+        ephemeral: {= serviceconf.get("ephemeral", "true") =}
+        pod_prefix: {= serviceconf.get("pod_prefix", "null") =}
+        restart_policy: {= serviceconf.get("restart_policy", "on-failure") =}
+        restart_sec: {= serviceconf.get("restart_sec", 2) =}
+        separator: {= serviceconf.get("separator", "null") =}
+        stop_timeout: {= serviceconf.get("stop_timeout", "null") =}
     paths:
       base: /opt/containers/{= cookiecutter.project_name =}
       compose: docker-compose.yml
