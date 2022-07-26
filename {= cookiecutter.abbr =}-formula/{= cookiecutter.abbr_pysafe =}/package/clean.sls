@@ -43,6 +43,9 @@ include:
     - purge: {{ {= cookiecutter.abbr_pysafe =}.install.remove_all_data_for_sure }}
     - require:
       - {= cookiecutter.name =} is absent
+    - retry:
+        attempts: 5
+        interval: 2
 
 {%- if {= cookiecutter.abbr_pysafe =}.install.remove_all_data_for_sure %}
 
