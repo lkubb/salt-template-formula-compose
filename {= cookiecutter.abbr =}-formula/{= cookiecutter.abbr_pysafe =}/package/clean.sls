@@ -8,6 +8,18 @@
 include:
   - {{ sls_config_clean }}
 
+{%- if {= cookiecutter.abbr_pysafe =}.install.autoupdate_service %}
+
+Podman autoupdate service is disabled for {= cookiecutter.name =}:
+{%-   if {= cookiecutter.abbr_pysafe =}.install.rootless %}
+  compose.systemd_service_disabled:
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+{%-   else %}
+  service.disabled:
+{%-   endif %}
+    - name: podman-auto-update.timer
+{%- endif %}
+
 {= cookiecutter.name =} is absent:
   compose.removed:
     - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.compose }}

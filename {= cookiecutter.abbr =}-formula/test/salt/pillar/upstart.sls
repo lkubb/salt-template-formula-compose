@@ -56,6 +56,8 @@
 {!- endif !}
   install:
     rootless: true
+    autoupdate: true
+    autoupdate_service: false
     remove_all_data_for_sure: false
 {!- if "install" in cookiecutter._settings !}
     {= cookiecutter._settings.install | yaml(False) | indent(4) =}

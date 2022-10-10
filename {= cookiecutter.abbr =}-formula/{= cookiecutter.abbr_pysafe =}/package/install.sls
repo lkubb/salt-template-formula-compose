@@ -71,3 +71,15 @@
     - require:
       - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
 {%- endif %}
+
+{%- if {= cookiecutter.abbr_pysafe =}.install.autoupdate_service is not none %}
+
+Podman autoupdate service is managed for {= cookiecutter.name =}:
+{%-   if {= cookiecutter.abbr_pysafe =}.install.rootless %}
+  compose.systemd_service_{{ "enabled" if {= cookiecutter.abbr_pysafe =}.install.autoupdate_service else "disabled" }}:
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+{%-   else %}
+  service.{{ "enabled" if {= cookiecutter.abbr_pysafe =}.install.autoupdate_service else "disabled" }}:
+{%-   endif %}
+    - name: podman-auto-update.timer
+{%- endif %}
