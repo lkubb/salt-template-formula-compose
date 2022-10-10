@@ -14,6 +14,7 @@ values:
       remove_orphans: {= composeconf.get("remove_orphans", "true") =}
       build: {= composeconf.get("build", "false") =}
       build_args: {= composeconf.get("build_args", "null") =}
+      pull: {= composeconf.get("pull", "false") =}
 {!- set serviceconf = composeconf.get("service", {}) !}
       service:
         container_prefix: {= serviceconf.get("container_prefix", "null") =}
