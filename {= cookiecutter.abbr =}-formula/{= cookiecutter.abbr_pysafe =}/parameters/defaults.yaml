@@ -12,6 +12,8 @@ values:
       pod_args: {= composeconf.get("pod_args", "null") =}
       project_name: {= cookiecutter.project_name =}
       remove_orphans: {= composeconf.get("remove_orphans", "true") =}
+      build: {= composeconf.get("build", "false") =}
+      build_args: {= composeconf.get("build_args", "null") =}
 {!- set serviceconf = composeconf.get("service", {}) !}
       service:
         container_prefix: {= serviceconf.get("container_prefix", "null") =}
@@ -45,7 +47,7 @@ values:
 {!- endfor !}
 {!- if cookiecutter._lookup !}
 {!-   for var, val in cookiecutter._lookup.items() !}
-{!-     if var not in ["paths", "user"] !}
+{!-     if var not in ["compose", "paths", "user"] !}
     {= {var: val} | yaml(False) | indent(4) =}
 {!-     endif !}
 {!-   endfor !}
