@@ -24,6 +24,16 @@
     - require:
       - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
 
+{= cookiecutter.name =} paths are present:
+  file.directory:
+    - names:
+      - {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.base }}
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - group: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - makedirs: true
+    - require:
+      - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+
 {%- if {= cookiecutter.abbr_pysafe =}.install.podman_api %}
 
 {= cookiecutter.name =} podman API is enabled:

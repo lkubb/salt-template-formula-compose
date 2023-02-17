@@ -8,22 +8,22 @@
     added_in_lookup: lookup_value
 {!- set composeconf = cookiecutter._lookup.get("compose", {}) !}
     compose:
-      create_pod: {= composeconf.get("create_pod", "null") =}
+      create_pod: {= composeconf.get("create_pod", "null") | lower =}
       pod_args: {= composeconf.get("pod_args", "null") =}
       project_name: {= cookiecutter.project_name =}
-      remove_orphans: {= composeconf.get("remove_orphans", "true") =}
-      build: {= composeconf.get("build", "false") =}
+      remove_orphans: {= composeconf.get("remove_orphans", "true") | lower =}
+      build: {= composeconf.get("build", "false") | lower =}
       build_args: {= composeconf.get("build_args", "null") =}
-      pull: {= composeconf.get("pull", "false") =}
+      pull: {= composeconf.get("pull", "false") | lower =}
 {!- for conf in composeconf !}
 {!-   if conf not in ["create_pod", "pod_args", "project_name", "remove_orphans", "build", "build_args", "pull", "service"] !}
-      {{ conf }}: {{ composeconf[conf] | json }}
+      {{ conf }}: {{ composeconf[conf] }}
 {!-   endif !}
 {!- endfor !}
 {!- set serviceconf = composeconf.get("service", {}) !}
       service:
         container_prefix: {= serviceconf.get("container_prefix", "null") =}
-        ephemeral: {= serviceconf.get("ephemeral", "true") =}
+        ephemeral: {= serviceconf.get("ephemeral", "true") | lower =}
         pod_prefix: {= serviceconf.get("pod_prefix", "null") =}
         restart_policy: {= serviceconf.get("restart_policy", "on-failure") =}
         restart_sec: {= serviceconf.get("restart_sec", 2) =}
@@ -31,7 +31,7 @@
         stop_timeout: {= serviceconf.get("stop_timeout", "null") =}
 {!- for conf in serviceconf !}
 {!-   if conf not in ["container_prefix", "ephemeral", "pod_prefix", "restart_policy", "restart_sec", "separator", "stop_timeout"] !}
-        {{ conf }}: {{ serviceconf[conf] | json }}
+        {{ conf }}: {{ serviceconf[conf] }}
 {!-   endif !}
 {!- endfor !}
     paths:
