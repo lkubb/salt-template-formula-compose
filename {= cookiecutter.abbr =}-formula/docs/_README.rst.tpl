@@ -47,9 +47,7 @@ Configuration
 -------------
 An example pillar is provided, please see `pillar.example`. Note that you do not need to specify everything by pillar. Often, it's much easier and less resource-heavy to use the ``parameters/<grain>/<value>.yaml`` files for non-sensitive settings. The underlying logic is explained in `map.jinja`.
 
-Available states
-----------------
-Need to be rendered still.
+<INSERT_STATES>
 
 Contributing to this repo
 -------------------------
