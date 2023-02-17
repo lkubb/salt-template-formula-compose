@@ -16,6 +16,11 @@
       build: {= composeconf.get("build", "false") =}
       build_args: {= composeconf.get("build_args", "null") =}
       pull: {= composeconf.get("pull", "false") =}
+{!- for conf in composeconf !}
+{!-   if conf not in ["create_pod", "pod_args", "project_name", "remove_orphans", "build", "build_args", "pull", "service"] !}
+      {{ conf }}: {{ composeconf[conf] | json }}
+{!-   endif !}
+{!- endfor !}
 {!- set serviceconf = composeconf.get("service", {}) !}
       service:
         container_prefix: {= serviceconf.get("container_prefix", "null") =}
@@ -25,6 +30,11 @@
         restart_sec: {= serviceconf.get("restart_sec", 2) =}
         separator: {= serviceconf.get("separator", "null") =}
         stop_timeout: {= serviceconf.get("stop_timeout", "null") =}
+{!- for conf in serviceconf !}
+{!-   if conf not in ["container_prefix", "ephemeral", "pod_prefix", "restart_policy", "restart_sec", "separator", "stop_timeout"] !}
+        {{ conf }}: {{ serviceconf[conf] | json }}
+{!-   endif !}
+{!- endfor !}
     paths:
       base: /opt/containers/{= cookiecutter.project_name =}
       compose: docker-compose.yml
@@ -59,6 +69,7 @@
     autoupdate: true
     autoupdate_service: false
     remove_all_data_for_sure: false
+    podman_api: true
 {!- if "install" in cookiecutter._settings !}
     {= cookiecutter._settings.install | yaml(False) | indent(4) =}
 {!- endif !}

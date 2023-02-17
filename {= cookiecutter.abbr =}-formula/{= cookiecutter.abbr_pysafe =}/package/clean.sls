@@ -41,6 +41,25 @@ Podman autoupdate service is disabled for {= cookiecutter.name =}:
     - require:
       - {= cookiecutter.name =} is absent
 
+{%- if {= cookiecutter.abbr_pysafe =}.install.podman_api %}
+
+{= cookiecutter.name =} podman API is unavailable:
+  compose.systemd_service_dead:
+    - name: podman
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - onlyif:
+      - fun: user.info
+        name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+
+{= cookiecutter.name =} podman API is disabled:
+  compose.systemd_service_disabled:
+    - name: podman
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - onlyif:
+      - fun: user.info
+        name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+{%- endif %}
+
 {= cookiecutter.name =} user session is not initialized at boot:
   compose.lingering_managed:
     - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}

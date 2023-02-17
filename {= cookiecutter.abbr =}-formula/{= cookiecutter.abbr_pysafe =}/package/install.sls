@@ -25,15 +25,22 @@
     - require:
       - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
 
-{= cookiecutter.name =} paths are present:
-  file.directory:
-    - names:
-      - {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.base }}
+{%- if {= cookiecutter.abbr_pysafe =}.install.podman_api %}
+
+{= cookiecutter.name =} podman API is enabled:
+  compose.systemd_service_enabled:
+    - name: podman
     - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
-    - group: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
-    - makedirs: true
     - require:
-      - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+      - {= cookiecutter.name =} user session is initialized at boot
+
+{= cookiecutter.name =} podman API is available:
+  compose.systemd_service_running:
+    - name: podman
+    - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
+    - require:
+      - {= cookiecutter.name =} user session is initialized at boot
+{%- endif %}
 
 {= cookiecutter.name =} compose file is managed:
   file.managed:
