@@ -51,7 +51,7 @@ Podman autoupdate service is disabled for {= cookiecutter.name =}:
 
 {= cookiecutter.name =} podman API is unavailable:
   compose.systemd_service_dead:
-    - name: podman
+    - name: podman.socket
     - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - onlyif:
       - fun: user.info
@@ -59,7 +59,7 @@ Podman autoupdate service is disabled for {= cookiecutter.name =}:
 
 {= cookiecutter.name =} podman API is disabled:
   compose.systemd_service_disabled:
-    - name: podman
+    - name: podman.socket
     - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - onlyif:
       - fun: user.info

@@ -38,14 +38,14 @@
 
 {= cookiecutter.name =} podman API is enabled:
   compose.systemd_service_enabled:
-    - name: podman
+    - name: podman.socket
     - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - require:
       - {= cookiecutter.name =} user session is initialized at boot
 
 {= cookiecutter.name =} podman API is available:
   compose.systemd_service_running:
-    - name: podman
+    - name: podman.socket
     - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
     - require:
       - {= cookiecutter.name =} user session is initialized at boot
