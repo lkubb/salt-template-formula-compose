@@ -8,8 +8,8 @@ Prerequisites
 -------------
 Cookiecutter
 ~~~~~~~~~~~~
-* You will need to install ``cookiecutter`` from HEAD currently, since this template relies on alternative Jinja syntax (slated for v2).
-* This cookiecutter currently needs to be `modified <https://github.com/lkubb/cookiecutter/tree/fix-with-alt-jinjatags>`_ to find the template files with the alternative syntax, otherwise it will complain about this not being a template. (@TODO pull request)
+* Cookiecutter currently needs to be `modified <https://github.com/lkubb/cookiecutter/tree/fix-with-alt-jinjatags>`_ to find the template files with the alternative syntax, otherwise it will complain about this not being a template. (@TODO pull request)
+* Also, since PR #1692, cookiecutter does not support dicts with new keys, which breaks my use case. Hence I `removed this breaking change again <https://github.com/lkubb/cookiecutter/tree/my>`_.
 
 Cruft
 ~~~~~
@@ -25,7 +25,7 @@ Since I use ``pipx`` to manage python programs in their own isolated environment
 
     pipx install git+https://github.com/lkubb/cruft.git@my
     pipx runpip cruft uninstall cookiecutter
-    pipx runpip cruft install git+https://github.com/lkubb/cookiecutter.git@fix-with-alt-jinjatags
+    pipx runpip cruft install git+https://github.com/lkubb/cookiecutter.git@my
 
 Pip might complain about some dependencies, but it works.
 
