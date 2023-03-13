@@ -6,7 +6,7 @@
     # Just for testing purposes
     winner: lookup
     added_in_lookup: lookup_value
-{!- set composeconf = cookiecutter._lookup.get("compose", {}) !}
+{!- set composeconf = cookiecutter.lookup.get("compose", {}) !}
     compose:
       create_pod: {= composeconf.get("create_pod", "null") | lower =}
       pod_args: {= composeconf.get("pod_args", "null") =}
@@ -40,11 +40,11 @@
 {!- for cnt in cookiecutter.containers.split(",") !}
       config_{= cnt =}: {= cnt =}.env
 {!- endfor !}
-{!- if "paths" in cookiecutter._lookup !}
-      {= cookiecutter._lookup.paths | yaml(False) | indent(6) =}
+{!- if "paths" in cookiecutter.lookup !}
+      {= cookiecutter.lookup.paths | yaml(False) | indent(6) =}
 {!- endif !}
     user:
-{!- set userconf = cookiecutter._lookup.get("user", {}) !}
+{!- set userconf = cookiecutter.lookup.get("user", {}) !}
       groups: {= userconf.get("groups", []) =}
       home: {= userconf.get("home", "null") =}
       name: {= userconf.get("name", cookiecutter.project_name) =}
@@ -56,8 +56,8 @@
       {{ conf }}: {= userconf[conf] =}
 {!-   endif !}
 {!- endfor !}
-{!- if cookiecutter._lookup !}
-{!-   for var, val in cookiecutter._lookup.items() !}
+{!- if cookiecutter.lookup !}
+{!-   for var, val in cookiecutter.lookup.items() !}
 {!-     if var not in ["compose", "paths", "user"] !}
     {= {var: val} | yaml(False) | indent(4) =}
 {!-     endif !}
@@ -69,11 +69,11 @@
     autoupdate_service: false
     remove_all_data_for_sure: false
     podman_api: true
-{!- if "install" in cookiecutter._settings !}
-    {= cookiecutter._settings.install | yaml(False) | indent(4) =}
+{!- if "install" in cookiecutter.settings !}
+    {= cookiecutter.settings.install | yaml(False) | indent(4) =}
 {!- endif !}
-{!- if cookiecutter._settings !}
-{!-   for var, val in cookiecutter._settings.items() !}
+{!- if cookiecutter.settings !}
+{!-   for var, val in cookiecutter.settings.items() !}
 {!-     if "install" != var !}
   {= {var: val} | yaml(False) | indent(2) =}
 {!-     endif !}
