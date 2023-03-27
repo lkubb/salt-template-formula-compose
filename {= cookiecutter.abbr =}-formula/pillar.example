@@ -36,6 +36,11 @@
       build: {= composeconf.get("build", "false") | lower =}
       build_args: {= composeconf.get("build_args", "null") =}
       pull: {= composeconf.get("pull", "false") | lower =}
+{!- for conf in composeconf !}
+{!-   if conf not in ["create_pod", "pod_args", "project_name", "remove_orphans", "build", "build_args", "pull", "service"] !}
+      {= conf =}: {= composeconf[conf] =}
+{!-   endif !}
+{!- endfor !}
 {!- set serviceconf = composeconf.get("service", {}) !}
       service:
         container_prefix: {= serviceconf.get("container_prefix", "null") =}
@@ -64,7 +69,7 @@
       gid: {= userconf.get("gid", "null") =}
 {!- for conf in userconf !}
 {!-   if conf not in ["groups", "home", "name", "shell", "uid", "gid"] !}
-      {{ conf }}: {= userconf[conf] =}
+      {= conf =}: {= userconf[conf] =}
 {!-   endif !}
 {!- endfor !}
 {!- if cookiecutter.lookup !}

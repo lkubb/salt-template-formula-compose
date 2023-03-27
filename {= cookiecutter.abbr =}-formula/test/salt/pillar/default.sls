@@ -17,7 +17,7 @@
       pull: {= composeconf.get("pull", "false") | lower =}
 {!- for conf in composeconf !}
 {!-   if conf not in ["create_pod", "pod_args", "project_name", "remove_orphans", "build", "build_args", "pull", "service"] !}
-      {{ conf }}: {{ composeconf[conf] }}
+      {= conf =}: {= composeconf[conf] =}
 {!-   endif !}
 {!- endfor !}
 {!- set serviceconf = composeconf.get("service", {}) !}
@@ -31,7 +31,7 @@
         stop_timeout: {= serviceconf.get("stop_timeout", "null") =}
 {!- for conf in serviceconf !}
 {!-   if conf not in ["container_prefix", "ephemeral", "pod_prefix", "restart_policy", "restart_sec", "separator", "stop_timeout"] !}
-        {{ conf }}: {{ serviceconf[conf] }}
+        {= conf =}: {= serviceconf[conf] =}
 {!-   endif !}
 {!- endfor !}
     paths:
@@ -53,7 +53,7 @@
       gid: {= userconf.get("gid", "null") =}
 {!- for conf in userconf !}
 {!-   if conf not in ["groups", "home", "name", "shell", "uid", "gid"] !}
-      {{ conf }}: {= userconf[conf] =}
+      {= conf =}: {= userconf[conf] =}
 {!-   endif !}
 {!- endfor !}
 {!- if cookiecutter.lookup !}
