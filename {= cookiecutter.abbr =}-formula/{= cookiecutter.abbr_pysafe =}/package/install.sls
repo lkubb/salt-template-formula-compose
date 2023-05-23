@@ -2,7 +2,7 @@
 
 {%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as {= cookiecutter.abbr_pysafe =} with context %}
-{%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
+{%- from tplroot ~ "/libtofsstack.jinja" import files_switch with context %}
 
 {= cookiecutter.name =} user account is present:
   user.present:
@@ -54,8 +54,10 @@
 {= cookiecutter.name =} compose file is managed:
   file.managed:
     - name: {{ {= cookiecutter.abbr_pysafe =}.lookup.paths.compose }}
-    - source: {{ files_switch(["docker-compose.yml", "docker-compose.yml.j2"],
-                              lookup="{= cookiecutter.name =} compose file is present"
+    - source: {{ files_switch(
+                    ["docker-compose.yml", "docker-compose.yml.j2"],
+                    config={= cookiecutter.abbr_pysafe =},
+                    lookup="{= cookiecutter.name =} compose file is present",
                  )
               }}
     - mode: '0644'

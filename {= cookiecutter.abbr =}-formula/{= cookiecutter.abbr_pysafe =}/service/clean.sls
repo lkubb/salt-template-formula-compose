@@ -1,6 +1,5 @@
 # vim: ft=sls
 
-
 {#-
     Stops the {= ", ".join(cookiecutter.containers.split(",")) =} container services
     and disables them at boot time.
