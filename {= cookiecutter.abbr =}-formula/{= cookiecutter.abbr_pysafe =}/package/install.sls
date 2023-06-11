@@ -63,7 +63,7 @@
     - mode: '0644'
     - user: root
     - group: {{ {= cookiecutter.abbr_pysafe =}.lookup.rootgroup }}
-    - makedirs: True
+    - makedirs: true
     - template: jinja
     - makedirs: true
     - context:
