@@ -28,7 +28,7 @@ include:
     - template: jinja
     - require:
       - user: {{ {= cookiecutter.abbr_pysafe =}.lookup.user.name }}
-    - watch_in:
+    - require_in:
       - {= cookiecutter.name =} is installed
     - context:
         {= cookiecutter.abbr_pysafe =}: {{ {= cookiecutter.abbr_pysafe =} | json }}

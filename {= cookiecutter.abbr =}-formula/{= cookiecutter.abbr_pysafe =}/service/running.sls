@@ -34,3 +34,4 @@ include:
 {%- endif %}
     - watch:
       - {= cookiecutter.name =} is installed
+      - {= cookiecutter.name =} environment files are managed
