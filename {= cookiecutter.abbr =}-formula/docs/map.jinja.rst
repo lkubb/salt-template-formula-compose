@@ -474,7 +474,6 @@ Here is an example based on `template-formula/{= cookiecutter.abbr_pysafe =}/con
 
 .. code-block:: sls
 
-    # -*- coding: utf-8 -*-
     # vim: ft=sls
 
     {#- Get the `tplroot` from `tpldir` #}
